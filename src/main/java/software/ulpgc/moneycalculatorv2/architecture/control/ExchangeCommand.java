@@ -5,24 +5,24 @@ package software.ulpgc.moneycalculatorv2.architecture.control;
 import software.ulpgc.moneycalculatorv2.architecture.model.Currency;
 import software.ulpgc.moneycalculatorv2.architecture.model.ExchangeRate;
 import software.ulpgc.moneycalculatorv2.architecture.model.Money;
-import software.ulpgc.moneycalculatorv2.architecture.persistence.ExchangeRateLoader;
 import software.ulpgc.moneycalculatorv2.architecture.view.CurrencyDialog;
 import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDialog;
 import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDisplay;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ExchangeCommand implements Command{
     private final MoneyDialog moneyDialog;
     private final CurrencyDialog currencyDialog;
-    private final ExchangeRateLoader loader;
     private final MoneyDisplay moneyDisplay;
+    private final List<ExchangeRate> exchangeRates;
 
-    public ExchangeCommand(MoneyDialog moneyDialog, CurrencyDialog currencyDialog, ExchangeRateLoader loader, MoneyDisplay moneyDisplay) {
+    public ExchangeCommand(MoneyDialog moneyDialog, CurrencyDialog currencyDialog, MoneyDisplay moneyDisplay, List<ExchangeRate> exchangeRates) {
         this.moneyDialog = moneyDialog;
         this.currencyDialog = currencyDialog;
-        this.loader = loader;
         this.moneyDisplay = moneyDisplay;
+        this.exchangeRates= exchangeRates;
     }
 
     @Override
@@ -30,9 +30,25 @@ public class ExchangeCommand implements Command{
         Money money = moneyDialog.get();
         Currency currency = currencyDialog.get();
 
-        ExchangeRate exchangeRate = loader.load(money.currency(),currency , LocalDate.now());
-        Money result = new Money(money.amount()*exchangeRate.rate(),currency);
+        double rate = getRate(money.currency(),currency);
+        Money result = new Money(money.amount()*rate,currency);
 
         moneyDisplay.show(result);
+    }
+
+    private double getRate(Currency fromCurrency, Currency toCurrency) {
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            System.out.println("----------------------------");
+            System.out.println("From: "+ exchangeRate.from());
+            System.out.println("FromC: " +fromCurrency);
+            System.out.println("To: "+ exchangeRate.to());
+            System.out.println("ToC: " +toCurrency);
+            System.out.println(exchangeRate.from().equals(fromCurrency));
+            System.out.println(exchangeRate.to().equals(toCurrency));
+            if (exchangeRate.from().equals(fromCurrency) && exchangeRate.to().equals(toCurrency)) {
+                return exchangeRate.rate();
+            }
+        }
+        throw new IllegalArgumentException("Tasa de cambio no encontrada para las monedas proporcionadas.");
     }
 }
