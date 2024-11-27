@@ -5,6 +5,9 @@ import software.ulpgc.moneycalculatorv2.apps.windows.view.SwingMoneyDialog;
 import software.ulpgc.moneycalculatorv2.apps.windows.view.SwingMoneyDisplay;
 import software.ulpgc.moneycalculatorv2.architecture.control.Command;
 import software.ulpgc.moneycalculatorv2.architecture.model.Currency;
+import software.ulpgc.moneycalculatorv2.architecture.view.CurrencyDialog;
+import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDialog;
+import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDisplay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,19 +61,19 @@ public class MainFrame extends JFrame {
         return new SwingMoneyDialog(currencies);
     }
 
-    private void add(String operation, Command command){ //Añadir comandos
+    public void add(String operation, Command command){ //Añadir comandos
         commands.put(operation,command);
     }
 
-    public SwingMoneyDialog getMoneyDialog() {
+    public MoneyDialog getMoneyDialog() {
         return moneyDialog;
     }
 
-    public SwingCurrencyDialog getCurrencyDialog() {
+    public CurrencyDialog getCurrencyDialog() {
         return currencyDialog;
     }
 
-    public SwingMoneyDisplay getMoneyDisplay() {
+    public MoneyDisplay getMoneyDisplay() {
         return moneyDisplay;
     }
 }
