@@ -8,8 +8,6 @@ import software.ulpgc.moneycalculatorv2.architecture.model.Money;
 import software.ulpgc.moneycalculatorv2.architecture.view.CurrencyDialog;
 import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDialog;
 import software.ulpgc.moneycalculatorv2.architecture.view.MoneyDisplay;
-
-import java.time.LocalDate;
 import java.util.List;
 
 public class ExchangeCommand implements Command{
@@ -38,13 +36,6 @@ public class ExchangeCommand implements Command{
 
     private double getRate(Currency fromCurrency, Currency toCurrency) {
         for (ExchangeRate exchangeRate : exchangeRates) {
-            System.out.println("----------------------------");
-            System.out.println("From: "+ exchangeRate.from());
-            System.out.println("FromC: " +fromCurrency);
-            System.out.println("To: "+ exchangeRate.to());
-            System.out.println("ToC: " +toCurrency);
-            System.out.println(exchangeRate.from().equals(fromCurrency));
-            System.out.println(exchangeRate.to().equals(toCurrency));
             if (exchangeRate.from().equals(fromCurrency) && exchangeRate.to().equals(toCurrency)) {
                 return exchangeRate.rate();
             }
