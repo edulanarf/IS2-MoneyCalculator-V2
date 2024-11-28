@@ -30,16 +30,39 @@ public class MainFrame extends JFrame {
         this.setSize(800,800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);                       //En el centro de la pantalla
-        this.setLayout(new FlowLayout());
-        this.add(moneyDialog = createMoneyDialog());
-        this.add(currencyDialog = createCurrencyDialog());
-        this.add(moneyDisplay = createMoneyDisplay());
-        this.add(createCalculateButton());
+
+        this.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();                     // Creo un panel para agrupar los componentes
+        contentPanel.setBackground(new Color(25, 180, 225));
+
+        contentPanel.add(moneyDialog = createMoneyDialog());
+        contentPanel.add(currencyDialog = createCurrencyDialog());
+        contentPanel.add(moneyDisplay = createMoneyDisplay());
+
+        moneyDialog.setPreferredSize(new Dimension(150, 35));
+        currencyDialog.setPreferredSize(new Dimension(150, 35));
+        moneyDisplay.setPreferredSize(new Dimension(150, 35));
+        contentPanel.add(createCalculateButton());
+        this.add(contentPanel, BorderLayout.CENTER);
+
+        JLabel titleLabel = new JLabel("Money Calculator", JLabel.CENTER);
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(50, 50, 50));
+        this.add(titleLabel, BorderLayout.NORTH);
+
         this.commands = new HashMap<>();
     }
 
     private Component createCalculateButton() {
-        JButton button = new JButton();
+
+        JButton button = new JButton("Convert");
+        button.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        button.setBackground(new Color(0, 123, 255));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(200, 40));
+
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
